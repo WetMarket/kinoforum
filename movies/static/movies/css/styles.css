@@ -1,0 +1,14 @@
+/* Стили для заголовка */
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+nav {
+    text-align: center;
+}
+
+/* Общий фон приятного цвета */
+body {
+    background-color: antiquewhite;
+}

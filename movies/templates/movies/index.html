@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load movies_tags %}
+
+{% block content %}
+
+    {% show_categories %}
+
+    <h2>Популярное сейчас</h2>
+
+    <ul>
+        {% for p in posts %}
+            {% if p.is_published %}
+                <li>
+                    <h3>{{ p.title }}</h3>
+                    <p>{{ p.content }}</p>
+                    <p><a href="{% url 'post' p.id %}">Перейти к просмотру</a></p>
+                    {% if not forloop.last %}
+                        <hr>
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    {% show_categories %}
+
+{% endblock %}
