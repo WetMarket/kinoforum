@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
+from movies.models import Movies
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Оставить отзыв", 'url_name': 'reviews'},
@@ -9,32 +11,18 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
 # Добавил категории для сайта
 categories_db = [{'title': "ФИЛЬМЫ", 'url_name': 'movies'},
                  {'title': "СЕРИАЛЫ", 'url_name': 'series'},
-                 {'title': "МУЛЬТФИЛЬМЫ", 'url_name': 'animation'},
-                 ]
-
-data_db = [
-
-    {'id': 1, 'title': 'Джентльмены',
-     'content': 'Комедийный боевик 2019 года, одиннадцатый полнометражный фильм британского кинорежиссёра Гая Ричи.',
-     'is_published': True},
-
-    {'id': 2, 'title': 'Линкольн для адвоката',
-     'content': 'Линкольн дя Адвоката - это судебная и детективная драма, в которой блистает Мэтью Макконахи.',
-     'is_published': True},
-
-    {'id': 3, 'title': 'Американский психопат',
-     'content': 'Американский сатирический фильм ужасов 2000 года по одноимённому роману Брета Истона Эллиса.',
-     'is_published': True},
-]
+                 {'title': "МУЛЬТФИЛЬМЫ", 'url_name': 'animation'}, ]
 
 
 def index(request):
+    posts = Movies.published.all()
     data = {
         'title': 'КИНОФОРУМ',
         'menu': menu,
-        'posts': data_db,
+        'posts': posts,
     }
     return render(request, 'movies/index.html', context=data)
+
 
 
 def about(request):
@@ -42,8 +30,15 @@ def about(request):
                   {'title': 'О сайте', 'menu': menu})
 
 
-def show_post(request, post_id):
-    return HttpResponse(f"Отображение статьи с id = {post_id}")
+def show_post(request, post_slug):
+    post = get_object_or_404(Movies, slug=post_slug)
+    data = {
+        'title': post.title,
+        'menu': menu,
+        'post': post,
+        'cat_selected': 1,
+    }
+    return render(request, 'movies/post.html', context=data)
 
 
 def reviews(request):

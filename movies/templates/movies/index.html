@@ -7,18 +7,19 @@
 
     <h2>Популярное сейчас</h2>
 
-    <ul>
+    <ul class="list-movies">
         {% for p in posts %}
-            {% if p.is_published %}
                 <li>
                     <h3>{{ p.title }}</h3>
-                    <p>{{ p.content }}</p>
-                    <p><a href="{% url 'post' p.id %}">Перейти к просмотру</a></p>
+                    {% autoescape off %}
+                        {{ p.content|linebreaks|truncatewords:50 }}
+                    {% endautoescape %}
+                    <div class="clear"></div>
+                    <p class="link-post"><a href="{{ p.get_absolute_url }}">Перейти к просмотру</a></p>
                     {% if not forloop.last %}
                         <hr>
                     {% endif %}
                 </li>
-            {% endif %}
         {% endfor %}
     </ul>
 
