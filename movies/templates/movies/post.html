@@ -1,7 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if post.photo %}
-        <p><img class="img-article-left" src="{{ post.photo.url }}"></p>
-    {% endif %}
-    {{ post.content|linebreaks }}
+    
+    <div class = "post-container">
+        <div class="wrapper">
+        
+            <div>
+                {% if post.poster %}
+                    <img src="{{ post.poster.url }}" alt="{{ post.title }} постер">
+                {% else %}
+                    <p>Изображение не загружено</p>
+                {% endif %}
+            </div>
+        
+            <div class="description">
+                <ul class="details">
+                    <li><span>Рейтинг:</span>{{ post.details.rating }}</li>
+                    <li><span>Бюджет фильма:</span>{{ post.details.budget|floatformat:"0" }} $</li>
+                    <li><span>Дата выхода:</span>{{ post.details.release_date|date:"d.m.Y" }}</li>
+                    <li><span>Жанр:</span>
+                        {% for tag in post.tags.all %}
+                            <a href="{% url 'tag' cat_slug=cat_slug tag_slug=tag.slug %}">{{ tag.tag }}</a>
+                        {% endfor %}
+                    </li>
+                    <li><span>Режиссёр:</span>
+                        {% for director in directors %}
+                            <a href="{% url 'person' person_slug=director.slug %}">{{ director }}</a>
+                        {% endfor %}
+                    </li>
+                </ul>
+            
+                    <h2>Описание:</h2>
+                    <p>{{ post.content }}</p>
+            </div>
+        
+        </div>
+        <!-- /.wrapper -->
+    </div>
+    <!-- /.container -->
+    
 {% endblock %}

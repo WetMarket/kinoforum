@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    <div class="genres">
+    
+        <h3 class>Жанры в категории</h3>
+    
+        <ul>
+            {% for tag in tags %}
+                <li><a href="{% url 'tag' cat_slug=cat_slug tag_slug=tag.slug %}">{{ tag.tag }}</a></li>
+            {% endfor %}
+        </ul>
+    
+    </div>
+    
+{% endblock %}

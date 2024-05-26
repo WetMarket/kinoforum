@@ -1,5 +1,5 @@
-<nav>
-    {% for n in nav %}
-        <a href="{% url 'categories' n.url_name %}">{{ n.title }}</a>
+<nav class="categories">
+    {% for cat in cats %}
+            <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
     {% endfor %}
 </nav>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    <div class = "movies-container">
+        <ul>
+        {% for p in posts %}
+            <li>
+                <h3>{{ p.title }}</h3>
+                <p>
+                {% autoescape off %}
+                    {{ p.content|linebreaks|truncatewords:30 }}
+                {% endautoescape %}
+                </p>
+                <a href="{{ p.get_absolute_url }}" class="movie-link"></a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

@@ -1,16 +1,11 @@
 from django import template
 
-import movies.views as views
+from movies.models import Category
 
 register = template.Library()
 
 
-@register.simple_tag()
-def get_cats():
-    return views.categories_db
-
-
 @register.inclusion_tag('movies/list_categories.html')
-def show_categories():
-    nav = views.categories_db
-    return {"nav": nav}
+def show_categories(cat_selected_id=0):
+    cats = Category.objects.all()
+    return {"cats": cats, "cat_selected": cat_selected_id}

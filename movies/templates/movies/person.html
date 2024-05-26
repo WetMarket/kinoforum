@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+    <div class="person-container">
+        <div class="wrapper">
+            
+            <div>
+                {% if person.photo %}
+                    <img src="{{ person.photo.url }}" alt="{{ person.name_ru }} фото">
+                {% else %}
+                    <p>Изображение не загружено</p>
+                {% endif %}
+            </div>
+
+            <div class="description">
+                <h2>{{ person.name_en }}</h2>
+                {% if person.bio %}
+                    <p>{{ person.bio }}</p>
+                {% endif %}
+                <h3>Фильмы:</h3>
+                <ul class="movie-list">
+                    {% for movie in person.details.all %}
+                        <li><a href="{{ movie.movie.get_absolute_url }}">{{ movie.movie.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        
+        </div>
+        <!-- /.wrapper -->
+    </div>
+    <!-- /.container -->
+{% endblock %}

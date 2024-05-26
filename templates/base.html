@@ -5,27 +5,32 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
     <title>{{ title }}</title>
     <link type="text/css" href="{% static 'movies/css/styles.css' %}" rel="stylesheet"/>
 </head>
 
 <body>
-<!-- неупорядоченный список -->
-<ul>
-    <li><a href="{% url 'index' %}">Главная</a></li>
+
+<ul class="menubar">
+    <li class="menu-item"><a class="menu-link" href="{% url 'index' %}">Главная</a></li>
     {% for m in menu %}
-        {% if not forloop.last %}
-            <li>
-                {% else %}
-            <li class="last">
-        {% endif %}
-        <a href="{% url m.url_name %}">{{ m.title }}</a>
+        <li class="menu-item {% if forloop.last %}last{% endif %}">
+            <a class="menu-link" href="{% url m.url_name %}">{{ m.title }}</a>
         </li>
     {% endfor %}
 </ul>
 
-<h1>{{ title }}</h1>
+<h1> {{ title }} </h1>
 
-{% block content %} {% endblock %}
+<div class="content">
+
+    {% block content %}
+
+    {% endblock %}
+
+</div>
+
 </body>
+
 </html>

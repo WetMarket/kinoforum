@@ -4,24 +4,38 @@
 {% block content %}
 
     {% show_categories %}
-
+    
+    <div class="movies-container">
+    
     <h2>Популярное сейчас</h2>
-
-    <ul class="list-movies">
+        <ul>
         {% for p in posts %}
-                <li>
-                    <h3>{{ p.title }}</h3>
-                    {% autoescape off %}
-                        {{ p.content|linebreaks|truncatewords:50 }}
-                    {% endautoescape %}
-                    <div class="clear"></div>
-                    <p class="link-post"><a href="{{ p.get_absolute_url }}">Перейти к просмотру</a></p>
-                    {% if not forloop.last %}
-                        <hr>
-                    {% endif %}
-                </li>
+            <li>
+                <h3>{{ p.title}}</h3>
+            
+                <div class="info">
+                    <p>Категория: {{ p.cat }}</p>
+                    <p>Жанр:
+                        {% for tag in p.tags.all %}
+                            {{ tag.tag }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </p>
+                    <p>Год: {{ p.details.release_date.year }}</p>
+                </div>
+                <div class="movie-description">
+                    <p>
+                        {% autoescape off %}
+                            {{ p.content|linebreaks|truncatewords:15 }}
+                        {% endautoescape %}
+                    </p>
+                </div>
+                
+                <a href="{{ p.get_absolute_url }}" class="movie-link"></a>
+            </li>
         {% endfor %}
-    </ul>
+        </ul>
+    
+    </div>
 
     {% show_categories %}
 
