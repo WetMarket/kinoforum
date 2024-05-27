@@ -1,0 +1,47 @@
+#header {
+    background-color: #2B2A32;
+}
+
+div.breadcrumbs {
+    background-color: #494853;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background-color: #494853;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+ul.messagelist {
+    list-style-type: none;
+}
+
+ul.messagelist li.success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+ul.messagelist li.error {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+.nav-sidebar {
+    background-color: #2B2A32;
+    color: white;
+}
+
+.breadcrumbs {
+    background-color: #f0f0f0;
+}
+
+.breadcrumbs a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: #0056b3;
+}

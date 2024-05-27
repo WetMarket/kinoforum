@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from movies.models import Movies, Category, TagPost, Person
+from movies.models import Movie, Category, TagPost, Person
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Оставить отзыв", 'url_name': 'reviews'},
@@ -10,7 +10,7 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
 
 
 def index(request):
-    posts = Movies.published.all()
+    posts = Movie.published.all()
     data = {
         'title': 'КИНОФОРУМ',
         'menu': menu,
@@ -22,7 +22,7 @@ def index(request):
 
 def show_category(request, cat_slug):
     category = get_object_or_404(Category, slug=cat_slug)
-    posts = Movies.published.filter(cat_id=category.pk)
+    posts = Movie.published.filter(cat_id=category.pk)
     tags = TagPost.objects.filter(tags__cat_id=category.pk).distinct()
 
     data = {
@@ -38,7 +38,7 @@ def show_category(request, cat_slug):
 
 
 def show_post(request, post_slug):
-    post = get_object_or_404(Movies, slug=post_slug)
+    post = get_object_or_404(Movie, slug=post_slug)
     directors = post.details.person.filter(role=1)
     data = {
         'title': post.details,
@@ -70,7 +70,7 @@ def show_tag_postlist(request, cat_slug, tag_slug):
     tag = get_object_or_404(TagPost, slug=tag_slug)
 
     # Получаем посты, которые принадлежат данной категории и имеют указанный тег
-    posts = Movies.published.filter(cat_id=category.pk, tags=tag).distinct()
+    posts = Movie.published.filter(cat_id=category.pk, tags=tag).distinct()
 
     if not posts.exists():
         raise Http404

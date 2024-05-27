@@ -5,10 +5,10 @@ from django.utils.text import slugify
 
 class PublishedModel(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=Movies.Status.PUBLISHED)
+        return super().get_queryset().filter(is_published=Movie.Status.PUBLISHED)
 
 
-class Movies(models.Model):
+class Movie(models.Model):
     class Status(models.IntegerChoices):
         DRAFT = 0, 'Черновик'
         PUBLISHED = 1, 'Опубликовано'
@@ -18,18 +18,20 @@ class Movies(models.Model):
 
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     slug = models.SlugField(max_length=255, db_index=True, unique=True)
-    content = models.TextField(blank=True)
-    time_create = models.DateTimeField(auto_now_add=True)
-    time_update = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(choices=Status.choices, default=Status.DRAFT)
-    poster = models.ImageField(upload_to='posters/', null=True, blank=True)
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='list')
-    tags = models.ManyToManyField('TagPost', blank=True, related_name='tags')
-    details = models.OneToOneField('MovieDetails', on_delete=models.CASCADE, null=True, blank=True, related_name='movie')
+    content = models.TextField(blank=True, verbose_name="Описание")
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
+    is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)), default=Status.DRAFT, verbose_name="Статус")
+    poster = models.ImageField(upload_to='posters/', null=True, blank=True, verbose_name="Постер")
+    cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='list', verbose_name="Категории")
+    tags = models.ManyToManyField('TagPost', blank=True, related_name='tags', verbose_name="Жанр")
+    details = models.OneToOneField('MovieDetails', on_delete=models.CASCADE, null=True, blank=True, related_name='movie', verbose_name="Детали")
 
     class Meta:
         ordering = ['-time_create']
         indexes = [models.Index(fields=['-time_create'])]
+        verbose_name = 'кино'
+        verbose_name_plural = 'Фильмы и сериалы'
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
@@ -39,8 +41,12 @@ class Movies(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True)
+    name = models.CharField(max_length=100, db_index=True, verbose_name="Категория")
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'cat_slug': self.slug})
@@ -71,12 +77,16 @@ class MovieDetails(models.Model):
 
 
 class Person(models.Model):
-    name_ru = models.CharField(max_length=100, verbose_name="Имя на русском")
-    name_en = models.CharField(max_length=100, verbose_name="Имя латиницей")
+    name_ru = models.CharField(max_length=100, verbose_name='Имя на русском')
+    name_en = models.CharField(max_length=100, verbose_name='Имя латиницей')
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
-    photo = models.ImageField(upload_to='persons/', null=True, blank=True)
-    bio = models.TextField(blank=True, null=True)
-    role = models.ManyToManyField('Role', blank=True, related_name='person')
+    photo = models.ImageField(upload_to='persons/', null=True, blank=True, verbose_name='Фото')
+    bio = models.TextField(blank=True, null=True, verbose_name='Информация')
+    role = models.ManyToManyField('Role', blank=True, related_name='person', verbose_name='Деятельность')
+
+    class Meta:
+        verbose_name = 'Человек'
+        verbose_name_plural = 'Люди'
 
     def save(self, *args, **kwargs):
         if not self.slug:
