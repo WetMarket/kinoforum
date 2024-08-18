@@ -1,13 +1,13 @@
 #header {
-    background-color: #2B2A32;
+    background-color: #303030;
 }
 
 div.breadcrumbs {
-    background-color: #494853;
+    background-color: #303030;
 }
 
 .module h2, .module caption, .inline-group h2 {
-    background-color: #494853;
+    background-color: #303030;
 }
 
 body {
@@ -29,7 +29,7 @@ ul.messagelist li.error {
 }
 
 .nav-sidebar {
-    background-color: #2B2A32;
+    background-color: #303030;
     color: white;
 }
 

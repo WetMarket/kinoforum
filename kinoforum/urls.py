@@ -22,7 +22,7 @@ from movies.views import page_not_found
 handler404 = page_not_found
 
 admin.site.site_header = "Панель администрирования"
-admin.site.index_title = "Коллекция видеопроката"
+admin.site.index_title = "Коллекция"
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -9,6 +9,7 @@ register_converter(converters.FourDigitYearConverter, 'year4')
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
+    path('addpage/', views.addpage, name='addpage'),
     path('watch/<slug:post_slug>/', views.show_post, name='post'),
     path('person/<slug:person_slug>/', views.show_person, name='person'),
     path('reviews/', views.reviews, name='reviews'),

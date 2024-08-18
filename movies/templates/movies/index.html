@@ -20,12 +20,12 @@
                             {{ tag.tag }}{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </p>
-                    <p>Год: {{ p.details.release_date.year }}</p>
+                    <p>Год: {{ p.release_date.year }}</p>
                 </div>
                 <div class="movie-description">
                     <p>
                         {% autoescape off %}
-                            {{ p.content|linebreaks|truncatewords:15 }}
+                            {{ p.content|linebreaks|truncatewords:14 }}
                         {% endautoescape %}
                     </p>
                 </div>

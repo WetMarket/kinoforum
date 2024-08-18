@@ -37,7 +37,7 @@ img {
 .menubar {
     list-style-type: none;
     overflow: hidden;
-    background-color: #2B2A32;
+    background-color: #303030;
 }
 
 .menu-item {
@@ -68,12 +68,15 @@ img {
     width: 1100px;
     max-width: 100%;
     margin: 0 auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 50px;
 }
 
 .movies-container h2 {
     grid-column: 1 / -1;
+    /*margin-top: 20px;*/
+    margin-bottom: 10px;
+    padding-left: 5px;
 }
 
 .movies-container h3 {
@@ -212,7 +215,7 @@ img {
 
 .details {
     margin-top: 20px;
-    margin-bottom: 120px;
+    margin-bottom: 80px;
     list-style-type: none;
 }
 
@@ -235,10 +238,10 @@ img {
     color: #333;
 }
 
-.description h2 {
+.description h3 {
     margin-bottom: 20px;
     color: #333;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .description p {
@@ -255,10 +258,10 @@ img {
     padding-bottom: 20px;
 }
 
-.person-container .description h2 {
+.person-container .description h3 {
     margin-bottom: 40px;
     color: #333;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .person-container .description p {
@@ -291,3 +294,82 @@ img {
 .movie-list li a:hover {
     color: #0056b3;
 }
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #303030;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 18px; /* Увеличенный размер шрифта для меток */
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px; /* Увеличенные отступы внутри полей */
+    margin-top: 5px;
+    border: 1px solid #ccc; /* Светло-серая граница */
+    border-radius: 8px; /* Закругленные углы для полей */
+    font-size: 16px; /* Увеличенный размер шрифта */
+    background-color: #f8f8f8; /* Светлый фон для полей */
+    transition: border-color 0.3s ease; /* Плавный переход для фокуса */
+}
+
+.form-input:focus {
+    border-color: #666; /* Темно-серая граница при фокусе */
+    outline: none; /* Убираем стандартный outline */
+}
+
+.form-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    transition: border-color 0.3s ease;
+}
+
+.form-textarea:focus {
+    border-color: #666;
+    outline: none;
+}
+
+.form-error {
+    color: #d9534f;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.btn {
+    margin-top: 20px;
+    background-color: #dcdcdc; /* Светло-серый цвет кнопки */
+    border: none; /* Убираем границу */
+    color: #303030; /* Темный серый цвет текста */
+    padding: 12px 20px; /* Увеличенные отступы для кнопки */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 18px; /* Увеличенный шрифт */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход для ховера */
+}
+
+.btn:hover {
+    background-color: #bbb; /* Темно-серый цвет при наведении */
+    color: #000; /* Темный цвет текста при наведении */
+}
+
+.btn:active {
+    background-color: #999; /* Ещё более тёмный цвет при нажатии */
+}
+
+.btn:focus {
+    outline: none; /* Убираем стандартный outline */
+}
+
+
