@@ -13,14 +13,18 @@
             </div>
 
             <div class="description">
-                <h2>{{ person.name_en }}</h2>
+                <h3>{{ person.name_en }}</h3>
                 {% if person.bio %}
                     <p>{{ person.bio }}</p>
                 {% endif %}
                 <h3>Фильмы:</h3>
                 <ul class="movie-list">
-                    {% for movie in person.details.all %}
-                        <li><a href="{{ movie.movie.get_absolute_url }}">{{ movie.movie.title }}</a></li>
+                    {% for movie in directed_movies %}
+                        <li>
+                            <a href="{{ movie.get_absolute_url }}">
+                                {{ movie.title }} ({{ movie.release_date|date:"Y" }})
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
