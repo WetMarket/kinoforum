@@ -85,7 +85,7 @@ img {
 }
 
 .movies-container .info{
-    height: 100px;
+    height: 120px;
     line-height: 20px;
     margin-bottom: 20px;
 }
@@ -113,7 +113,7 @@ img {
     flex-direction: column;
     justify-content: flex-start;
     max-width: 300px;
-    height: 320px;
+    height: 340px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -200,33 +200,79 @@ img {
 }
 
 .post-container {
-    width: 1100px;
+    width: 1000px;
     max-width: 100%;
-    margin: 0 auto;
+    margin: 0;
     padding-top: 20px;
+    padding-left: 20px;
     padding-bottom: 20px;
 }
 
 .wrapper {
     display: grid;
-    grid-template-columns: 2fr 3fr 1fr;
+    grid-template-columns: 1fr 2fr;
     grid-gap: 40px;
+    align-items: start;
+}
+
+.poster-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.poster {
+    width: 100%; /* постер будет занимать всю доступную ширину */
+    max-width: 300px; /* ограничиваем максимальную ширину */
+    aspect-ratio: 2 / 3; /* соотношение сторон 2:3 */
+    object-fit: cover; /* изображение будет обрезано, чтобы соответствовать контейнеру */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* добавление мягкой тени для объема */
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10px;
+    /*background-color: #fdfdfd; !* слегка светлый фон *!*/
+    /*border-radius: 10px;*/
+    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);*/
+}
+
+.description h3 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.description p {
+    line-height: 1.7;
+    color: #555;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 40px;
 }
 
 .details {
     margin-top: 20px;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
     list-style-type: none;
+    /*padding-left: 0;*/
 }
 
 .details li {
     margin-bottom: 15px;
     display: flex;
+    /*font-size: 18px;*/
+    /*line-height: 1.5;*/
 }
 
 .details li span {
-    width: 130px;
-    margin-right: 30px;
+    width: 140px;
+    margin-right: 20px;
+    /*font-weight: bold;*/
 }
 
 .details li a:not(:last-child)::after {
@@ -238,43 +284,21 @@ img {
     color: #333;
 }
 
-.description h3 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 20px;
-}
-
-.description p {
-    line-height: 1.5;
-    color: #555;
-    font-size: 18px;
-}
-
-.person-container{
-    width: 1100px;
+.person-container {
+    width: 1000px;
     max-width: 100%;
-    margin: 0 auto;
+    margin: 0;
     padding-top: 20px;
+    padding-left: 20px;
     padding-bottom: 20px;
 }
 
-.person-container .description h3 {
-    margin-bottom: 40px;
-    color: #333;
-    font-size: 20px;
-}
-
 .person-container .description p {
-    margin-bottom: 40px;
-    color: #555;
-    font-size: 18px;
-    line-height: 1.5;
+    margin-top: 20px;
 }
 
-.person-container .description h3 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 20px;
+.person-container .description ul {
+    margin-top: 20px;
 }
 
 .movie-list {
@@ -295,81 +319,89 @@ img {
     color: #0056b3;
 }
 
+.form-container {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .form-group {
     margin-bottom: 20px;
 }
 
 .form-label {
-    font-weight: bold;
-    color: #303030;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
     display: block;
-    font-size: 18px; /* Увеличенный размер шрифта для меток */
+    font-size: 16px;
 }
 
-.form-input {
+.form-control {
     width: 100%;
-    padding: 12px 15px; /* Увеличенные отступы внутри полей */
-    margin-top: 5px;
-    border: 1px solid #ccc; /* Светло-серая граница */
-    border-radius: 8px; /* Закругленные углы для полей */
-    font-size: 16px; /* Увеличенный размер шрифта */
-    background-color: #f8f8f8; /* Светлый фон для полей */
-    transition: border-color 0.3s ease; /* Плавный переход для фокуса */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
 }
 
-.form-input:focus {
-    border-color: #666; /* Темно-серая граница при фокусе */
-    outline: none; /* Убираем стандартный outline */
+.form-control:focus {
+    border-color: #5e72e4;
+    outline: none;
+}
+
+.form-control-file {
+    padding: 8px 8px 8px 0;
+}
+
+.form-check-input {
+    margin-right: 10px;
 }
 
 .form-textarea {
     width: 100%;
     height: 150px;
-    padding: 12px 15px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 16px;
-    background-color: #f8f8f8;
+    background-color: #f9f9f9;
     transition: border-color 0.3s ease;
-}
-
-.form-textarea:focus {
-    border-color: #666;
-    outline: none;
+    overflow: auto;
+    resize: vertical;
 }
 
 .form-error {
-    color: #d9534f;
+    color: #e3342f;
     margin-top: 5px;
     font-size: 14px;
 }
 
 .btn {
     margin-top: 20px;
-    background-color: #dcdcdc; /* Светло-серый цвет кнопки */
-    border: none; /* Убираем границу */
-    color: #303030; /* Темный серый цвет текста */
-    padding: 12px 20px; /* Увеличенные отступы для кнопки */
-    border-radius: 8px; /* Закругленные углы */
-    font-size: 18px; /* Увеличенный шрифт */
+    background-color: #dcdcdc;
+    border: none;
+    color: #303030;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 18px;
     cursor: pointer;
     text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход для ховера */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #bbb; /* Темно-серый цвет при наведении */
-    color: #000; /* Темный цвет текста при наведении */
+    background-color: #bbb;
+    color: #000;
 }
 
 .btn:active {
-    background-color: #999; /* Ещё более тёмный цвет при нажатии */
+    background-color: #999;
 }
 
 .btn:focus {
-    outline: none; /* Убираем стандартный outline */
+    outline: none;
 }
-
-

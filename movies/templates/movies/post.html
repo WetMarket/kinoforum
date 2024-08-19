@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
     
-    <div class = "post-container">
+    <div class="post-container">
         <div class="wrapper">
         
-            <div>
+            <div class="poster-container">
                 {% if post.poster %}
-                    <img src="{{ post.poster.url }}" alt="{{ post.title }} постер">
+                    <img src="{{ post.poster.url }}" alt="{{ post.title }} постер" class="poster">
                 {% else %}
                     <p>Изображение не загружено</p>
                 {% endif %}
@@ -16,19 +16,23 @@
                 <h3>{{ post.title_en }}</h3>
                 <ul class="details">
                     <li><span>Рейтинг:</span>{{ post.rating|default:"" }}</li>
+                    <li><span>Дата выхода:</span>{{ post.release_date|date:"d.m.Y" }}</li>
+                
                     <li><span>Бюджет фильма:</span>
                         {% if post.budget %}
                             {{ post.budget|floatformat:"0" }} $
                         {% else %}
+                            Не указан
                         {% endif %}
                     </li>
-                    <li><span>Дата выхода:</span>{{ post.release_date|date:"d.m.Y" }}</li>
+                
                     <li><span>Жанр:</span>
                         {% for tag in post.tags.all %}
                             <a href="{% url 'tag' cat_slug=cat_slug tag_slug=tag.slug %}">{{ tag.tag }}</a>
                         {% endfor %}
                     </li>
-                      <li><span>Режиссер:</span>
+                
+                    <li><span>Режиссер:</span>
                         {% if directors %}
                             {% for director in directors %}
                                 <a href="{% url 'person' person_slug=director.slug %}">{{ director.name_ru }}</a>
@@ -36,15 +40,17 @@
                         {% else %}
                             Не указан
                         {% endif %}
-                      </li>
+                    </li>
                 </ul>
             
-                    <h3>Описание:</h3>
-                    <p>{{ post.content }}</p>
+                <h3>Описание:</h3>
+                <p>{{ post.content }}</p>
+            
             </div>
         
         </div>
         <!-- /.wrapper -->
+    
     </div>
     <!-- /.container -->
     

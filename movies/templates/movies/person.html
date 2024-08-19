@@ -3,10 +3,9 @@
     
     <div class="person-container">
         <div class="wrapper">
-            
-            <div>
+            <div class="poster-container">
                 {% if person.photo %}
-                    <img src="{{ person.photo.url }}" alt="{{ person.name_ru }} фото">
+                    <img src="{{ person.photo.url }}" alt="{{ person.name_ru }} фото" class="poster">
                 {% else %}
                     <p>Изображение не загружено</p>
                 {% endif %}
@@ -32,5 +31,5 @@
         </div>
         <!-- /.wrapper -->
     </div>
-    <!-- /.container -->
+    
 {% endblock %}

@@ -1,24 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-    
-        <!-- Выводим ошибки формы -->
-        {% if form.non_field_errors %}
-            <div class="form-error">{{ form.non_field_errors }}</div>
-        {% endif %}
-    
-        {% for f in form %}
-            <div class="mb-3">
-                <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
-                {{ f }}
-                {% if f.errors %}
-                    <div class="form-error">{{ f.errors }}</div>
-                {% endif %}
-            </div>
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary">Добавить</button>
-    </form>
+    <div class="form-container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            <!-- Выводим ошибки формы -->
+            {% if form.non_field_errors %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+            {% endif %}
+        
+            {% for f in form %}
+                <div class="form-group">
+                    <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                    {{ f }}
+                    {% if f.errors %}
+                        <div class="form-error">{{ f.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
 {% endblock %}
