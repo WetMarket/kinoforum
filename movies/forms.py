@@ -9,7 +9,7 @@ import re
 
 # @deconstructible
 # class RussianValidator:
-#     ALLOWED_CHARS_PATTERN = r'^[а-яА-ЯёЁ0-9\s\-\'\":,]+$'
+#     ALLOWED_CHARS_PATTERN = r'^[а-яА-ЯёЁ0-9\s\-\'\":,IVXLCDM]+$'
 #     code = 'russian'
 #
 #     def __init__(self, message=None):
@@ -146,7 +146,7 @@ class AddPostForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание фильма'}),
             'release_date': forms.DateInput(attrs={'class': 'form-control',
                                                    'placeholder': 'Дата выхода', 'type': 'date'}),
-            'budget': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введите бюджет'}),
+            'budget': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введите бюджет', 'min': 0}),
             'rating': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Рейтинг от 0 до 10',
                                                'min': 0, 'max': 10}),
             'cat': forms.Select(attrs={'class': 'form-control'}),
@@ -161,7 +161,7 @@ class AddPostForm(forms.ModelForm):
         if len(title) > 50:
             raise ValidationError('Длина превышает 50 символов')
 
-        if title and not re.match(r'^[а-яА-ЯёЁ0-9\s\-\'\":,]+$', title):
+        if title and not re.match(r'^[а-яА-ЯёЁ0-9\s\-\'\":,IVXLCDM]+$', title):
             raise forms.ValidationError("Название должно содержать только русские буквы и допустимые символы.")
         return title
 
@@ -173,6 +173,13 @@ class AddPostForm(forms.ModelForm):
         if title_en and not re.match(r'^[a-zA-Z0-9\s\-\'\":,]+$', title_en):
             raise forms.ValidationError("Название должно содержать только английские буквы и допустимые символы.")
         return title_en
+
+    def clean_release_date(self):
+        release_date = self.cleaned_data.get('release_date')
+        min_year = 1900
+        if release_date and release_date.year < min_year:
+            raise ValidationError(f"Дата выхода не может быть раньше {min_year} года.")
+        return release_date
 
 
 class UploadFileForm(forms.Form):

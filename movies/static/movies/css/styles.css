@@ -257,7 +257,7 @@ img {
 
 .details {
     margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     list-style-type: none;
     /*padding-left: 0;*/
 }
@@ -294,11 +294,12 @@ img {
 }
 
 .person-container .description p {
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 35px;
 }
 
 .person-container .description ul {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .movie-list {

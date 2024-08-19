@@ -81,7 +81,7 @@ class MovieAdmin(admin.ModelAdmin):
 
     search_fields = ['title', 'title_en', 'cat__name', 'tags__tag',
                      'people_roles__name_ru', 'people_roles__name_en']
-    readonly_fields = ['post_poster','time_create', 'time_update']
+    readonly_fields = ['post_poster', 'time_create', 'time_update']
     # ordering = ['people_roles__name_ru', 'title']
     ordering = ['title']
     actions = ['set_published', 'set_draft']
@@ -142,9 +142,10 @@ class PersonAdmin(admin.ModelAdmin):
     ordering = ['name_ru']
     search_fields = ['name_ru', 'name_en']
     list_filter = [RoleFilter]
-    exclude = ('m_count', 'role')
 
-    readonly_fields = ('movie_roles_info',)  # Добавляем новое поле в readonly_fields
+    fields = ('name_ru', 'name_en', 'slug', 'photo', 'post_photo', 'bio', 'movie_roles_info')
+    readonly_fields = ('post_photo', 'movie_roles_info',)
+    exclude = ('m_count', 'role')
 
     def movie_roles_info(self, person: Person):
         roles = MoviePersonRole.objects.filter(person=person)
@@ -154,6 +155,12 @@ class PersonAdmin(admin.ModelAdmin):
                           f"({role.movie.release_date.year})" for role in roles])
 
     movie_roles_info.short_description = "Деятельность"
+
+    @admin.display(description="Изображение")
+    def post_photo(self, person: Person):
+        if person.photo:
+            return mark_safe(f"<img src='{person.photo.url}' width=50>")
+        return "Без постера"
 
     @admin.display(description="Деятельность")
     def role_display(self, person: Person):

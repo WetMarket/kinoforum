@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
+from datetime import date
 
 import re
 
@@ -33,18 +34,17 @@ class Movie(models.Model):
     # Основные поля
     title = models.CharField(max_length=255, verbose_name="Заголовок", help_text="Введите название фильма на русском")
     title_en = models.CharField(blank=True, null=True, max_length=255, verbose_name="Английское название")
-    slug = models.SlugField(null=True, max_length=255, db_index=True, unique=True, blank=True, verbose_name="URL")
+    slug = models.SlugField(null=True, blank=True, max_length=255, db_index=True, unique=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name="Описание")
     poster = models.ImageField(upload_to='posters/', null=True, blank=True, verbose_name="Постер")
-
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
-    time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
-    is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
-                                       default=Status.DRAFT, verbose_name="Статус")
-
     release_date = models.DateField(blank=True, null=True, verbose_name="Дата выхода")
     budget = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, verbose_name="Бюджет")
     rating = models.FloatField(null=True, blank=True, verbose_name="Рейтинг")
+    is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
+                                       default=Status.DRAFT, verbose_name="Статус")
+
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
 
     # Связанные поля
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='list', verbose_name="Категории")
@@ -84,14 +84,22 @@ class Movie(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
-        if self.budget and self.budget < 0:
-            raise ValidationError('Бюджет не может быть отрицательным.')
+        super().clean()
 
-        if self.title and not re.match(r'^[а-яА-ЯёЁ0-9\s\-\'\":,]+$', self.title):
+        if self.title and not re.match(r'^[а-яА-ЯёЁ0-9\s\-\'\":,IVXLCDM]+$', self.title):
             raise ValidationError("Название должно содержать только русские буквы и допустимые символы.")
 
         if self.title_en and not re.match(r'^[a-zA-Z0-9\s\-\'\":,]+$', self.title_en):
             raise ValidationError("Название должно содержать только английские буквы и допустимые символы.")
+
+        if self.release_date and self.release_date < date(1900, 1, 1):
+            raise ValidationError('Дата выхода фильма не может быть раньше 1900')
+
+        if self.rating is not None and (self.rating < 0 or self.rating > 10):
+            raise ValidationError('Рейтинг должен быть в пределах от 0 до 10.')
+
+        if self.budget and self.budget < 0:
+            raise ValidationError('Бюджет не может быть отрицательным.')
 
     def __str__(self):
         return self.title
@@ -133,7 +141,7 @@ class TagPost(models.Model):
 class Person(models.Model):
     name_ru = models.CharField(max_length=100, verbose_name='Имя на русском')
     name_en = models.CharField(max_length=100, verbose_name='Имя латиницей')
-    slug = models.SlugField(max_length=255, unique=True, db_index=True)
+    slug = models.SlugField(null=True, max_length=255, db_index=True, unique=True, blank=True, verbose_name="URL")
     photo = models.ImageField(upload_to='persons/', null=True, blank=True, verbose_name='Фото')
     bio = models.TextField(blank=True, null=True, verbose_name='Информация')
     m_count = models.IntegerField(blank=True, default=0)
@@ -146,6 +154,16 @@ class Person(models.Model):
         if not self.slug:
             self.slug = slugify(self.name_en)
         super().save(*args, **kwargs)
+
+    def clean(self):
+        super().clean()
+
+        #  Решил целесообразным добавить еще римские цифры
+        if self.name_ru and not re.match(r'^[а-яА-ЯёЁ\sIVXLCDM]+$', self.name_ru):
+            raise ValidationError("Название должно содержать только русские буквы")
+
+        if self.name_en and not re.match(r'^[a-zA-Z\s]+$', self.name_en):
+            raise ValidationError("Название должно содержать только английские буквы")
 
     def get_absolute_url(self):
         return reverse('person', kwargs={'person_slug': self.slug})
