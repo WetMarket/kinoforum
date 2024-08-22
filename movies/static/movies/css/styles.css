@@ -61,6 +61,27 @@ img {
     float: right;
 }
 
+.movies-heading {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding-top: 25px;
+    padding-left: 5px;
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.empty {
+    text-align: left;
+    font-size: 18px;
+    color: #666;
+    margin: 40px auto;
+    padding-top: 10px;
+    width: 1100px;
+    max-width: 100%;
+}
+
 .movies-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
@@ -70,13 +91,6 @@ img {
     margin: 0 auto;
     padding-top: 30px;
     padding-bottom: 50px;
-}
-
-.movies-container h2 {
-    grid-column: 1 / -1;
-    /*margin-top: 20px;*/
-    margin-bottom: 10px;
-    padding-left: 5px;
 }
 
 .movies-container h3 {
@@ -172,31 +186,40 @@ img {
     background-color: #ccc;
 }
 
+.genres {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    padding-top: 20px;
+    padding-left: 10px;
+}
+
 .genres h3 {
+    font-size: 24px;
+    font-weight: bold;
     margin-bottom: 20px;
+    text-align: left;
 }
 
-.genres ul {
-    list-style-type: none;
-    margin: 5px 0;
+.filter-form {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding-top: 30px;
+    padding-left: 5px;
 }
 
-.genres li {
-    display: inline-block;
+.filter-form label {
+    font-size: 16px;
+    font-weight: bold;
     margin-right: 10px;
 }
 
-.genres li a {
-    text-decoration: none;
-    color: #333;
+.filter-form select {
     padding: 5px 10px;
+    font-size: 16px;
     border-radius: 5px;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s ease;
-}
-
-.genres li a:hover {
-    background-color: #ccc;
+    border: 1px solid #ddd;
 }
 
 .post-container {
@@ -405,4 +428,93 @@ img {
 
 .btn:focus {
     outline: none;
+}
+
+.delete-container {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 550px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.delete-title {
+    color: #721c24;
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+.delete-message {
+    color: #721c24;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.delete-warning {
+    color: #721c24;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.delete-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.delete-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    width: 48%;
+}
+
+.confirm-button {
+    background-color: #d9534f;
+}
+
+.cancel-button {
+    background-color: #6c757d;
+}
+
+.confirm-button:hover {
+    background-color: #c9302c;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 36px;
+    margin: 0 4px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 12px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.pagination a.active {
+    border: 2px solid #333;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
 }

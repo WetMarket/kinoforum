@@ -7,16 +7,23 @@ from movies import views, converters
 register_converter(converters.FourDigitYearConverter, 'year4')
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('about/', views.about, name='about'),
-    path('addpage/', views.addpage, name='addpage'),
-    path('watch/<slug:post_slug>/', views.show_post, name='post'),
-    path('person/<slug:person_slug>/', views.show_person, name='person'),
-    path('reviews/', views.reviews, name='reviews'),
+    path('', views.MovieHome.as_view(), name='index'),
+    path('about/', views.MovieAbout.as_view(), name='about'),
+    path('addpage/', views.AddPage.as_view(), name='addpage'),
+    path('reviews/', views.MovieReview.as_view(), name='reviews'),
     path('contact/', views.contact, name='contact'),
     path('login/', views.login, name='login'),
-    path('<slug:cat_slug>/', views.show_category, name='category'),
-    path('<slug:cat_slug>/<slug:tag_slug>/', views.show_tag_postlist, name='tag'),
+
+    path('watch/<slug:post_slug>/', views.ShowPost.as_view(), name='post'),
+    path('person/<slug:person_slug>/', views.ShowPerson.as_view(), name='person'),
+
+    path('edit/<int:pk>/', views.UpdatePage.as_view(), name='edit_page'),
+    path('watch/<slug:slug>/delete/', views.DeletePage.as_view(), name='movie_delete'),
+
+    path('<slug:cat_slug>/', views.MovieCategory.as_view(), name='category'),
+
+
+    # path('<slug:cat_slug>/<slug:tag_slug>/', views.show_tag_postlist, name='tag'),
 
 
     # URL первой лабораторной
@@ -25,4 +32,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

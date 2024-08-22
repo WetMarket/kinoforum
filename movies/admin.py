@@ -76,7 +76,7 @@ class MovieAdmin(admin.ModelAdmin):
 
     list_display_links = ('title', )
     list_editable = ('is_published',)
-    list_per_page = 15
+    list_per_page = 10
     list_filter = [CategoryReverseFilter, GenreFilter, 'is_published']
 
     search_fields = ['title', 'title_en', 'cat__name', 'tags__tag',

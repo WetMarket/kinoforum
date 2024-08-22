@@ -1,0 +1,58 @@
+<div class="movies-container">
+    <ul>
+    {% for p in post %}
+        <li>
+            <h3>{{ p.title}}</h3>
+        
+            <div class="info">
+                <p>Категория: {{ p.cat }}</p>
+                <p>Жанр:
+                    {% for tag in p.tags.all %}
+                        {{ tag.tag }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </p>
+                <p>Год: {{ p.release_date.year }}</p>
+                <p>Рейтинг: {{ p.rating }}</p>
+            </div>
+            <div class="movie-description">
+                <p>
+                    {% autoescape off %}
+                        {{ p.content|truncatechars_html:100 }}
+                    {% endautoescape %}
+                </p>
+            </div>
+            
+            <a href="{{ p.get_absolute_url }}" class="movie-link"></a>
+        </li>
+        {% empty %}
+            <p class="empty">Ничего нет для выбранной категории.</p>
+    {% endfor %}
+    </ul>
+</div>
+
+{% if page_obj.has_other_pages %}
+    <div class="pagination">
+        {% if page_obj.number > 1 %}
+            <a href="?page=1" class="pagination-arrow">&laquo;</a>  <!-- Первая страница -->
+        {% endif %}
+{#        {% if page_obj.has_previous %}#}
+{#            <a href="?page={{page_obj.previous_page_number }}" class="pagination-arrow">&lt;</a>  <!-- Предыдущая страница -->#}
+{#        {% endif %}#}
+        {% for p in paginator.page_range %}
+            {% if page_obj.number == p %}
+                <a class="active">{{ p }}</a>
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                <a href="?page={{ p }}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+{#        {% if page_obj.has_next %}#}
+{#            <a href="?page={{ page_obj.next_page_number}}" class="pagination-arrow">&gt;</a>  <!-- Следующая страница -->#}
+{#        {% endif %}#}
+        {% if page_obj.number < paginator.num_pages %}
+            <a href="?page={{ paginator.num_pages }}" class="pagination-arrow">&raquo;</a>  <!-- Последняя страница -->
+        {% endif %}
+    </div>
+{% endif %}
+
+
+

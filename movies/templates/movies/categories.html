@@ -2,16 +2,24 @@
 
 {% block content %}
     
-    <div class="genres">
+    <div class="genres"> 
     
         <h3 class>Жанры в категории</h3>
     
-        <ul>
+        <form method="GET" id="filterForm">
+            <label for="genre">Выберите жанр:</label>
+            <select name="genre" id="genre" onchange="document.getElementById('filterForm').submit();">
+            <option value="">Все жанры</option>
             {% for tag in tags %}
-                <li><a href="{% url 'tag' cat_slug=cat_slug tag_slug=tag.slug %}">{{ tag.tag }}</a></li>
+                <option value="{{ tag.slug }}" {% if tag.slug == request.GET.genre %}selected{% endif %}>
+                    {{ tag.tag }}
+                </option>
             {% endfor %}
-        </ul>
+            </select>
+        </form>
     
     </div>
+    
+    {% include 'movies/_movie_list.html' %}
     
 {% endblock %}
