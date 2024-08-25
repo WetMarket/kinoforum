@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+    <div class="user-profile">
+    
+        <div class="user-profile-left">
+        
+            {% if user.photo %}
+                <img class="user-profile-avatar" src="{{ user.photo.url }}" alt="{{ user.username }}'s avatar">
+            {% else %}
+                <img class="user-profile-avatar" src="{{ default_image }}" alt="Default avatar">
+            {% endif %}
+            
+            <div class="user-profile-actions">
+                <h2 class="username">{{ user.username }}</h2>
+                
+                <label for="photo-upload" class="btn-submit btn-small">Сменить фото</label>
+                <input id="photo-upload" type="file" name="photo" form="user-profile-form" class="profile-photo-input ">
+                
+                <a href="{% url 'users:password_change' %}" class="btn-submit btn-small">Сменить пароль</a>
+                
+                 <div id="file-name" class="file-name"></div>
+                
+                <button class="btn-submit btn-small" form="user-profile-form" type="submit">Сохранить</button>
+            </div>
+        
+        </div>
+    
+        <div class="user-profile-right">
+            
+            <form id="user-profile-form" method="post" enctype="multipart/form-data" class="user-profile-form">
+                {% csrf_token %}
+            
+                 
+                {% if form.non_field_errors %}
+                    <div class="form-error">{{ form.non_field_errors }}</div>
+                {% endif %}
+            
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.email.id_for_label }}">E-mail:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="form-error">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.first_name.id_for_label }}">Имя:</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <div class="form-error">{{ form.first_name.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.last_name.id_for_label }}">Фамилия:</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <div class="form-error">{{ form.last_name.errors }}</div>
+                    {% endif %}
+                </div>
+            
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.date_birth.id_for_label }}">Дата рождения:</label>
+                    {{ form.date_birth }}
+                    {% if form.date_birth.errors %}
+                        <div class="form-error">{{ form.date_birth.errors }}</div>
+                    {% endif %}
+                </div>
+                
+            </form>
+            
+        </div>
+    
+    </div>
+    
+    <script>
+        document.getElementById('photo-upload').addEventListener('change', function() {
+            const fileInput = this;
+            const fileNameDisplay = document.getElementById('file-name');
+            const uploadLabel = document.getElementById('upload-label');
+            
+            if (fileInput.files && fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                fileNameDisplay.textContent = `Выбранный файл: ${fileName}`;
+                uploadLabel.textContent = 'Файл выбран';
+                uploadLabel.style.backgroundColor = '#4caf50';
+                uploadLabel.style.color = '#fff';
+            } else {
+                fileNameDisplay.textContent = '';
+                uploadLabel.textContent = 'Сменить фото';
+                uploadLabel.style.backgroundColor = '';
+                uploadLabel.style.color = '';
+            }
+        });
+    </script>
+    
+{% endblock %}

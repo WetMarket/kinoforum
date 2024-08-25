@@ -24,7 +24,10 @@ handler404 = page_not_found
 admin.site.site_header = "Панель администрирования"
 admin.site.index_title = "Коллекция"
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('movies.urls')),
+    path('users/', include('users.urls',  namespace="users")),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]

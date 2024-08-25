@@ -14,11 +14,22 @@
 
 <ul class="menubar">
     <li class="menu-item"><a class="menu-link" href="{% url 'index' %}">Главная</a></li>
-    {% for m in menu %}
-        <li class="menu-item {% if forloop.last %}last{% endif %}">
+    {% for m in mainmenu %}
+        <li class="menu-item">
             <a class="menu-link" href="{% url m.url_name %}">{{ m.title }}</a>
         </li>
     {% endfor %}
+    {% if user.is_authenticated %}
+        <li class="menu-item last">
+           <a href="{% url 'users:profile' %}" class="menu-link">{{user.username}}</a> |
+            <a class="menu-link" href="{% url 'users:logout' %}">Выйти</a>
+        </li>
+    {% else %}
+        <li class="menu-item last">
+            <a class="menu-link" href="{% url 'users:login' %}">Войти</a> |
+            <a class="menu-link" href="{% url 'users:register' %}">Регистрация</a>
+        </li>
+    {% endif %}
 </ul>
 
 <h1> {{ title }} </h1>

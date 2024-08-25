@@ -11,8 +11,9 @@ urlpatterns = [
     path('about/', views.MovieAbout.as_view(), name='about'),
     path('addpage/', views.AddPage.as_view(), name='addpage'),
     path('reviews/', views.MovieReview.as_view(), name='reviews'),
-    path('contact/', views.contact, name='contact'),
-    path('login/', views.login, name='login'),
+    path('contact/', views.MovieContact.as_view(), name='contact'),
+
+    # path('login/', views.login, name='login'),
 
     path('watch/<slug:post_slug>/', views.ShowPost.as_view(), name='post'),
     path('person/<slug:person_slug>/', views.ShowPerson.as_view(), name='person'),

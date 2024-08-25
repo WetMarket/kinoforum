@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -113,20 +115,27 @@ class ShowPerson(DataMixin, DetailView):
         return person
 
 
-class AddPage(DataMixin, CreateView):
+class AddPage(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'movies/addpage.html'
     title_page = 'Добавление статьи'
+    permission_required = 'movies.add_movie'
+
+    def form_valid(self, form):
+        w = form.save(commit=False)
+        w.author = self.request.user
+        return super().form_valid(form)
 
 
-class UpdatePage(DataMixin, UpdateView):
+class UpdatePage(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, UpdateView):
     model = Movie
     form_class = AddPostForm
     template_name = 'movies/addpage.html'
     title_page = 'Редактирование статьи'
+    permission_required = 'movies.change_movie'
 
 
-class DeletePage(DataMixin, DeleteView):
+class DeletePage(LoginRequiredMixin, DataMixin, DeleteView):
     model = Movie
     template_name = 'movies/movie_confirm_delete.html'
     context_object_name = 'movie'
@@ -144,15 +153,14 @@ class MovieReview(DataMixin, TemplateView):
     title_page = 'Оставить отзыв'
 
 
-def contact(request):
-    return HttpResponse("Обратная связь")
-
-
-def login(request):
-    return HttpResponse("Авторизация")
+class MovieContact(DataMixin, TemplateView):
+    template_name = 'movies/contact.html'
+    title_page = 'Обратная связь'
 
 
 # Из первой лабораторной
+@login_required
+@permission_required(perm='movies.view_movie', raise_exception=True)
 def archive(request, year):
     if year > 2024:
         return redirect('index', permanent=True)

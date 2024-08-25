@@ -38,10 +38,13 @@ img {
     list-style-type: none;
     overflow: hidden;
     background-color: #303030;
+    display: flex;
+    justify-content: space-between;
 }
 
 .menu-item {
-    float: left;
+    display: flex;
+    align-items: center;
 }
 
 .menu-link {
@@ -58,7 +61,9 @@ img {
 }
 
 .menu-item.last {
-    float: right;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 
 .movies-heading {
@@ -73,13 +78,11 @@ img {
 }
 
 .empty {
-    text-align: left;
-    font-size: 18px;
     color: #666;
-    margin: 40px auto;
-    padding-top: 10px;
+    margin: 30px auto;
     width: 1100px;
     max-width: 100%;
+    padding: 10px;
 }
 
 .movies-container {
@@ -201,27 +204,6 @@ img {
     text-align: left;
 }
 
-.filter-form {
-    width: 1100px;
-    max-width: 100%;
-    margin: 0 auto;
-    padding-top: 30px;
-    padding-left: 5px;
-}
-
-.filter-form label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.filter-form select {
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
 .post-container {
     width: 1000px;
     max-width: 100%;
@@ -245,12 +227,12 @@ img {
 }
 
 .poster {
-    width: 100%; /* постер будет занимать всю доступную ширину */
-    max-width: 300px; /* ограничиваем максимальную ширину */
-    aspect-ratio: 2 / 3; /* соотношение сторон 2:3 */
-    object-fit: cover; /* изображение будет обрезано, чтобы соответствовать контейнеру */
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* добавление мягкой тени для объема */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .description {
@@ -258,9 +240,6 @@ img {
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 10px;
-    /*background-color: #fdfdfd; !* слегка светлый фон *!*/
-    /*border-radius: 10px;*/
-    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);*/
 }
 
 .description h3 {
@@ -282,20 +261,16 @@ img {
     margin-top: 20px;
     margin-bottom: 30px;
     list-style-type: none;
-    /*padding-left: 0;*/
 }
 
 .details li {
     margin-bottom: 15px;
     display: flex;
-    /*font-size: 18px;*/
-    /*line-height: 1.5;*/
 }
 
 .details li span {
     width: 140px;
     margin-right: 20px;
-    /*font-weight: bold;*/
 }
 
 .details li a:not(:last-child)::after {
@@ -305,6 +280,10 @@ img {
 
 .details li a {
     color: #333;
+}
+
+.action-buttons p{
+    margin: 0;
 }
 
 .person-container {
@@ -341,93 +320,6 @@ img {
 
 .movie-list li a:hover {
     color: #0056b3;
-}
-
-.form-container {
-    width: 100%;
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-    display: block;
-    font-size: 16px;
-}
-
-.form-control {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: #5e72e4;
-    outline: none;
-}
-
-.form-control-file {
-    padding: 8px 8px 8px 0;
-}
-
-.form-check-input {
-    margin-right: 10px;
-}
-
-.form-textarea {
-    width: 100%;
-    height: 150px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-    overflow: auto;
-    resize: vertical;
-}
-
-.form-error {
-    color: #e3342f;
-    margin-top: 5px;
-    font-size: 14px;
-}
-
-.btn {
-    margin-top: 20px;
-    background-color: #dcdcdc;
-    border: none;
-    color: #303030;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 18px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #bbb;
-    color: #000;
-}
-
-.btn:active {
-    background-color: #999;
-}
-
-.btn:focus {
-    outline: none;
 }
 
 .delete-container {
@@ -517,4 +409,181 @@ img {
 
 .pagination a:hover:not(.active) {
     background-color: #ddd;
+}
+
+.form-error {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 15px;
+}
+
+.form-container {
+    width: 1100px;
+    max-width: 100%;
+    margin: 20px auto 20px;
+    text-align: left;
+}
+
+.user-form-container {
+    display: flex;
+    justify-content: center;
+}
+
+.user-form-container form {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-input {
+    min-width: 200px;
+    max-width: 400px;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border 0.3s;
+    resize: none;
+}
+
+.form-input:focus {
+    border: 1px solid #333333;
+    outline: none;
+}
+
+.form-check {
+    margin-left: 10px;
+}
+
+.btn-submit {
+    padding: 10px 15px;
+    color: #333;
+    background-color: #f0f0f0;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.btn-small {
+    font-size: 14px;
+}
+
+.btn-submit:hover {
+    background-color: #ccc;
+}
+
+.user-profile {
+    display: flex;
+    justify-content: space-between;
+    gap: 70px;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.user-profile-left {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.user-profile-avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f0f0f0;
+    margin-bottom: 25px;
+}
+
+.user-profile-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+     align-items: center;
+}
+
+.user-profile-actions .btn-submit {
+    width: 60%;
+    max-width: 200px;
+    text-align: center;
+}
+
+.user-profile-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    color: #333;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.profile-photo-input {
+    display: none;
+}
+
+#id_photo + label {
+    cursor: pointer;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.about-app {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+}
+
+.intro {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.last {
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 30px;
+
 }

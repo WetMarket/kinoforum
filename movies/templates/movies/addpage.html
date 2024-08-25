@@ -5,7 +5,6 @@
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
         
-            <!-- Выводим ошибки формы -->
             {% if form.non_field_errors %}
                 <div class="form-error">{{ form.non_field_errors }}</div>
             {% endif %}
@@ -19,8 +18,8 @@
                     {% endif %}
                 </div>
             {% endfor %}
-        
-            <button type="submit" class="btn btn-primary">Cохранить</button>
+
+            <button type="submit" class="btn-submit">Cохранить</button>
         </form>
     </div>
 {% endblock %}

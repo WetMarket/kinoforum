@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -51,6 +52,8 @@ class Movie(models.Model):
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags', verbose_name="Жанр")
     people_roles = models.ManyToManyField('Person', blank=True, through='MoviePersonRole', related_name='movies_roles',
                                           verbose_name="Участники")  # Участники и их роли
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, default=None,
+                               related_name='posts', verbose_name="Автор поста")
 
     class Meta:
         ordering = ['-time_create']

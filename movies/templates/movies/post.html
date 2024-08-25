@@ -45,7 +45,17 @@
 
                 <h3>Описание:</h3>
                 <p>{{ post.content }}</p>
-
+                
+                <div class="action-buttons">
+                    {% if perms.movies.change_movie %}
+                        <p ><a href="{% url 'edit_page' pk=post.pk %}">Редактировать</a></p>
+                    {% endif %}
+            
+                    {% if perms.movies.delete_movie %}
+                        <p ><a href="{% url 'movie_delete' slug=post.slug %}">Удалить</a></p>
+                    {% endif %}
+                </div>
+            
             </div>
 
         </div>

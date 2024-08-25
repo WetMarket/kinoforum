@@ -136,24 +136,24 @@ class AddPostForm(forms.ModelForm):
 
     class Meta:
         model = Movie
-        fields = ['title', 'title_en', 'slug', 'cat', 'release_date', 'content',
-                  'budget', 'rating', 'tags', 'people_roles', 'poster', 'is_published']
+        fields = ['title', 'title_en', 'slug', 'cat', 'tags', 'release_date', 'rating', 'content',
+                  'budget',   'people_roles', 'poster', 'is_published']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название'}),
-            'title_en': forms.TextInput(attrs={'class': 'form-control',
+            'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Введите название'}),
+            'title_en': forms.TextInput(attrs={'class': 'form-input',
                                                'placeholder': 'Введите название на английском'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите URL'}),
-            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание фильма'}),
-            'release_date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control',
+            'slug': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Введите URL'}),
+            'content': forms.Textarea(attrs={'class': 'form-input', 'placeholder': 'Описание фильма'}),
+            'release_date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-input',
                                                                       'placeholder': 'Дата выхода', 'type': 'date'}),
-            'budget': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введите бюджет', 'min': 0}),
-            'rating': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Рейтинг от 0 до 10',
+            'budget': forms.NumberInput(attrs={'class': 'form-input', 'placeholder': 'Введите бюджет', 'min': 0}),
+            'rating': forms.NumberInput(attrs={'class': 'form-input', 'placeholder': 'Рейтинг от 0 до 10',
                                                'min': 0, 'max': 10}),
-            'cat': forms.Select(attrs={'class': 'form-control'}),
-            'tags': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'people_roles': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'is_published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'poster': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+            'cat': forms.Select(),
+            'tags': forms.SelectMultiple(),
+            'people_roles': forms.SelectMultiple(),
+            'is_published': forms.CheckboxInput(attrs={'class': 'form-check'}),
+            'poster': forms.ClearableFileInput()
         }
 
     def clean_title(self):
@@ -167,6 +167,9 @@ class AddPostForm(forms.ModelForm):
 
     def clean_title_en(self):
         title_en = self.cleaned_data.get('title_en')
+        if title_en is None or title_en == '':
+            return title_en
+
         if len(title_en) > 50:
             raise ValidationError('Длина превышает 50 символов')
 
