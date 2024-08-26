@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="filter-container">
+        <form method="GET" id="filterForm">
+            <label for="category">Выберите категорию:</label>
+            <select name="category" id="category" onchange="document.getElementById('filterForm').submit();">
+                <option value="">Все категории</option>
+                {% for category in categories %}
+                    <option value="{{ category.slug }}" {% if category.slug == selected_category %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        
+            <label for="tag">Выберите жанр:</label>
+            <select name="tag" id="tag" onchange="document.getElementById('filterForm').submit();">
+                <option value="">Все жанры</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.slug }}" {% if tag.slug == selected_tag %}selected{% endif %}>
+                        {{ tag.tag }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    <div class="movies-container">
+        <ul>
+            {% for p in favorites %}
+                <li>
+                    <h3>{{ p.title }}</h3>
+                    <div class="info">
+                        <p>Категория: {{ p.cat.name }}</p>
+                        <p>Жанр:
+                            {% for tag in p.tags.all %}
+                                {{ tag.tag }}{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </p>
+                        <p>Год: {{ p.release_date.year }}</p>
+                        <p>Рейтинг: {{ p.rating }}</p>
+                    </div>
+                    <div class="movie-description">
+                        <p>
+                            {% autoescape off %}
+                                {{ p.content|truncatechars_html:100 }}
+                            {% endautoescape %}
+                        </p>
+                    </div>
+                    <a href="{{ p.get_absolute_url }}" class="movie-link"></a>
+                </li>
+            {% empty %}
+                <p class="empty">Еще ничего не добавлено</p>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.number > 1 %}
+                <a href="?page=1" class="pagination-arrow">&laquo;</a>  <!-- Первая страница -->
+            {% endif %}
+            {% for p in paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <a class="active">{{ p }}</a>
+                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                    <a href="?page={{ p }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_tag %}&tag={{ selected_tag }}{% endif %}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.number < paginator.num_pages %}
+                <a href="?page={{ paginator.num_pages }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_tag %}&tag={{ selected_tag }}{% endif %}" class="pagination-arrow">&raquo;</a>  <!-- Последняя страница -->
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

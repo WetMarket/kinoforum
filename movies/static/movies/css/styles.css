@@ -222,8 +222,36 @@ img {
 
 .poster-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+}
+
+.favorites-action {
+    margin-top: 25px;
+    padding-left: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+}
+
+.favorites-action .btn {
+    padding: 10px 15px;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.favorites-action .btn-danger {
+    background-color: #cccccc;
+}
+
+.favorites-action .btn-danger:hover {
+    background-color: #aaaaaa;
 }
 
 .poster {
@@ -678,4 +706,23 @@ img {
 
 .login-message a:hover {
     text-decoration: underline;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: flex-start; /* Выравнивание по левому краю */
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 15px; /* Расстояние между элементами */
+    margin: 20px auto; /* Отступы от краев контейнера */
+    max-width: 1100px;
+    width: 100%;
+}
+
+.filter-container label {
+    margin-right: 5px;
+}
+
+.filter-container select {
+    margin-right: 40px;
+    padding: 2px;
 }

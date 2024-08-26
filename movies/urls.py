@@ -16,6 +16,10 @@ urlpatterns = [
     # path('login/', views.login, name='login'),
 
     path('watch/<slug:post_slug>/', views.ShowPost.as_view(), name='post'),
+
+    path('watch/<slug:post_slug>/favorites/add/', views.add_favorites, name='add_favorites'),
+    path('watch/<slug:post_slug>/favorites/remove/', views.remove_favorites, name='remove_favorites'),
+
     path('person/<slug:person_slug>/', views.ShowPerson.as_view(), name='person'),
 
     path('edit/<int:pk>/', views.UpdatePage.as_view(), name='edit_page'),

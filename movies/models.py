@@ -224,3 +224,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Комментарий от {self.author} к {self.movie.title}"
+
+
+class Favorites(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} - {self.movie.title}"

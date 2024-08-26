@@ -5,13 +5,27 @@ from django.http import Http404, HttpResponseNotFound, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 
-from movies.models import Movie, Category, TagPost, Person
+from movies.models import Movie, Category, TagPost, Person, Favorites
 from movies.forms import AddPostForm, CommentForm
 from movies.utils import DataMixin
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 p = Paginator(Movie, 3)
+
+
+@login_required
+def add_favorites(request, post_slug):
+    movie = get_object_or_404(Movie, slug=post_slug)
+    Favorites.objects.get_or_create(user=request.user, movie=movie)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def remove_favorites(request, post_slug):
+    movie = get_object_or_404(Movie, slug=post_slug)
+    Favorites.objects.filter(user=request.user, movie=movie).delete()
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class MovieHome(DataMixin, ListView):
@@ -76,6 +90,9 @@ class ShowPost(DataMixin, DetailView):
 
         paginator = Paginator(comments, self.paginate_by)
         page = self.request.GET.get('page')
+        is_favorite = Favorites.objects.filter(user=self.request.user, movie=post).exists() \
+            if self.request.user.is_authenticated else False
+
         try:
             comments = paginator.page(page)
         except PageNotAnInteger:
@@ -86,6 +103,7 @@ class ShowPost(DataMixin, DetailView):
         context.update({
             'comments': comments,
             'form': CommentForm(),
+            'is_favorite': is_favorite,
         })
 
         return self.get_mixin_context(

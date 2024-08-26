@@ -21,7 +21,8 @@
     {% endfor %}
     {% if user.is_authenticated %}
         <li class="menu-item last">
-           <a href="{% url 'users:profile' %}" class="menu-link">{{user.username}}</a> |
+            <a class="menu-link" href="{% url 'users:favorites' %}">Избранное</a> |
+            <a class="menu-link" href="{% url 'users:profile' %}">{{user.username}}</a> |
             <a class="menu-link" href="{% url 'users:logout' %}">Выйти</a>
         </li>
     {% else %}

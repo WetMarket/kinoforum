@@ -13,6 +13,18 @@
                 {% else %}
                     <p>Изображение не загружено</p>
                 {% endif %}
+            
+                {% if user.is_authenticated %}
+                    <div class="favorites-action">
+                        {% if is_favorite %}
+                            <a href="{% url 'remove_favorites' post_slug=post.slug %}" class="btn btn-danger">
+                                Удалить из избранного</a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' post_slug=post.slug %}" class="btn-submit">
+                                Добавить в избранное</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="description">
