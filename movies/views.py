@@ -1,20 +1,15 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404, HttpResponseNotFound, HttpResponse
 from django.urls import reverse_lazy
+from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 
 from movies.models import Movie, Category, TagPost, Person
-from movies.forms import AddPostForm, UploadFileForm
-
-from django.views.generic import ListView, TemplateView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-from django.core.paginator import Paginator
-
+from movies.forms import AddPostForm, CommentForm
 from movies.utils import DataMixin
 
-# import uuid
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 p = Paginator(Movie, 3)
 
@@ -67,6 +62,7 @@ class ShowPost(DataMixin, DetailView):
     template_name = 'movies/post.html'
     context_object_name = 'post'
     slug_url_kwarg = 'post_slug'
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,6 +71,22 @@ class ShowPost(DataMixin, DetailView):
         # Получаем всех режиссеров фильма
         directors = post.movie_roles.filter(role_id=1).select_related('person')
         director_people = [director.person for director in directors]
+
+        comments = post.comments.all()
+
+        paginator = Paginator(comments, self.paginate_by)
+        page = self.request.GET.get('page')
+        try:
+            comments = paginator.page(page)
+        except PageNotAnInteger:
+            comments = paginator.page(1)
+        except EmptyPage:
+            comments = paginator.page(paginator.num_pages)
+
+        context.update({
+            'comments': comments,
+            'form': CommentForm(),
+        })
 
         return self.get_mixin_context(
             context,
@@ -85,6 +97,16 @@ class ShowPost(DataMixin, DetailView):
             rating=post.rating,
             directors=director_people
         )
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.movie = self.get_object()
+            comment.author = self.request.user
+            comment.save()
+            return redirect(self.request.path)
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_object(self, queryset=None):
         return get_object_or_404(Movie.published, slug=self.kwargs[self.slug_url_kwarg])

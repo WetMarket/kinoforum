@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, TagPost, Person, Movie
+from .models import Category, TagPost, Person, Movie, Comment
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
@@ -187,3 +187,20 @@ class AddPostForm(forms.ModelForm):
 
 class UploadFileForm(forms.Form):
     file = forms.ImageField(label="Изображение")
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={'placeholder': 'Напишите ваш комментарий...', 'maxlength': 500}),
+        }
+
+    def clean_text(self):
+        text = self.cleaned_data.get('text')
+        max_length = 500
+
+        if len(text) > max_length:
+            raise ValidationError(f"Комментарий не может быть длиннее {max_length} символов.")
+        return text
