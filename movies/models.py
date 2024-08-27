@@ -64,6 +64,12 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
 
+    def get_likes_count(self):
+        return self.moviereaction_set.filter(is_like=True).count()
+
+    def get_dislikes_count(self):
+        return self.moviereaction_set.filter(is_like=False).count()
+
     def save(self, *args, **kwargs):
         if not self.title_en:
             self.title_en = translit_to_eng(self.title)
@@ -232,3 +238,21 @@ class Favorites(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.movie.title}"
+
+
+class MovieReaction(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    is_like = models.BooleanField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'movie')
+        verbose_name = 'Реакция на фильм'
+        verbose_name_plural = 'Реакции на фильмы'
+
+    def __str__(self):
+        if self.is_like is None:
+            reaction = "No reaction"
+        else:
+            reaction = '👍' if self.is_like else '👎'
+        return f"{self.user} - {self.movie.title}: {reaction}"

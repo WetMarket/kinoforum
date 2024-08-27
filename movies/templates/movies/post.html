@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+]{% load custom_filters %}
 {% block content %}
     
     <script src="{% static 'movies/js/scripts.js' %}"></script>
@@ -13,8 +14,9 @@
                 {% else %}
                     <p>Изображение не загружено</p>
                 {% endif %}
-            
+
                 {% if user.is_authenticated %}
+{#                    <p>Этот фильм добавили в избранное {{ favorites_count }} {{ favorites_count|ru_pluralize }}.</p>#}
                     <div class="favorites-action">
                         {% if is_favorite %}
                             <a href="{% url 'remove_favorites' post_slug=post.slug %}" class="btn btn-danger">
@@ -24,11 +26,12 @@
                                 Добавить в избранное</a>
                         {% endif %}
                     </div>
+                    {% include 'movies/parts/action_buttons.html' %} 
                 {% endif %}
             </div>
-
+            
             <div class="description">
-                <h3>{{ post.title_en }}</h3>
+                <h3>{{ post.title_en }}</h3> 
                 <ul class="details">
                     <li><span>Рейтинг:</span>{{ post.rating|default:"" }}</li>
                     <li><span>Дата выхода:</span>{{ post.release_date|date:"d.m.Y" }}</li>
@@ -60,80 +63,13 @@
 
                 <h3>Описание:</h3>
                 <p>{{ post.content }}</p>
-                
-                <div class="action-buttons">
-                    {% if perms.movies.change_movie %}
-                        <p ><a href="{% url 'edit_page' pk=post.pk %}">Редактировать</a></p>
-                    {% endif %}
-            
-                    {% if perms.movies.delete_movie %}
-                        <p ><a href="{% url 'movie_delete' slug=post.slug %}">Удалить</a></p>
-                    {% endif %}
-                </div>
             
             </div>
 
         </div>
-    
-        <div class="comments-container">
-             <div class="comment-form">
-            {% if request.user.is_authenticated %}
-                <h3 style="font-size: 18px; margin-bottom: 20px">Добавить комментарий</h3>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.text.label_tag }}
-                    {{ form.text }}
-                    <div class="char-counter">
-                        Осталось символов: <span id="char-count">500</span>
-                    </div>
-                    <button type="submit" class="btn-submit">Отправить</button>
-                </form>
-            {% else %}
-                <div class="login-message">
-                    <p>Только зарегистрированные пользователи могут оставлять комментарии. 
-                        <a href="{% url 'users:login' %}">Войдите</a>, чтобы оставить комментарий.</p>
-                </div>
-            {% endif %}
-            </div>
         
-            <div class="comments-list">
-             <h3>Комментарии:</h3>
-                {% for comment in comments %}
-                    <div class="comment-item">
-                        <strong>{{ comment.author }}:</strong>
-                        <p>{{ comment.text }}</p>
-                        <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
-                    </div>
-                {% empty %}
-                    <p>Напишите первый комментарий.</p>
-                {% endfor %}
-            </div>
-            
-            {% if comments.has_other_pages %}
-                <div class="pagination post">
-                
-                    {% if comments.has_previous %}
-                        <a href="?page={{ comments.previous_page_number }}" class="pagination-arrow">&lt;</a>
-                    {% endif %}
-        
-                    {% for p in comments.paginator.page_range %}
-                        {% if p == 1 or p == comments.paginator.num_pages %}
-                            <a href="?page={{ p }}" {% if comments.number == p %}class="active"{% endif %}>{{ p }}</a>
-                        {% elif p >= comments.number|add:-2 and p <= comments.number|add:2 %}
-                            <a href="?page={{ p }}" {% if comments.number == p %}class="active"{% endif %}>{{ p }}</a>
-                        {% elif p == comments.number|add:-3 or p == comments.number|add:3 %}
-                            <span>...</span>
-                        {% endif %}
-                    {% endfor %}
-        
-                    {% if comments.has_next %}
-                        <a href="?page={{ comments.next_page_number }}" class="pagination-arrow">&gt;</a>
-                    {% endif %}
-                </div>
-            {% endif %}
-        
-        </div>
-    
+        {% include 'movies/parts/comment_section.html' %}
+
     </div>
 
 {% endblock %}
