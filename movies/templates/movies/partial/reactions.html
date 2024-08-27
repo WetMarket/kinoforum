@@ -1,0 +1,26 @@
+<h3 style="margin-bottom: 18px">Поставьте оценку</h3>
+<div class="reaction-buttons">
+    {% if user.is_authenticated %}
+        <!-- Если пользователь авторизован, показываем кнопки для реакции -->
+        <a href="{% url 'toggle_reaction' post_slug=post.slug reaction_type='like' %}" class="btn reaction-btn {% if user_reaction and user_reaction.is_like %}btn-active{% else %}btn-inactive{% endif %}">
+            👍
+        </a>
+        <a href="{% url 'toggle_reaction' post_slug=post.slug reaction_type='dislike' %}" class="btn reaction-btn {% if user_reaction and user_reaction.is_like is False %}btn-active{% else %}btn-inactive{% endif %}">
+            👎
+        </a>
+    {% else %}
+        <!-- Если пользователь не авторизован, перенаправляем на страницу входа -->
+        <a href="{% url 'users:login' %}?next={% url 'post' post_slug=post.slug %}" class="btn reaction-btn btn-inactive">
+            👍
+        </a>
+        <a href="{% url 'users:login' %}?next={% url 'post' post_slug=post.slug %}" class="btn reaction-btn btn-inactive">
+            👎
+        </a>
+    {% endif %}
+</div>
+
+{% if like_count or dislike_count %}
+    <p class="reaction-stat">
+        Нравится: {{ like_count }} | Не нравится: {{ dislike_count }}
+    </p>
+{% endif %}

@@ -59,7 +59,7 @@ eggs/
 .eggs/
 lib/
 lib64/
-movies/templates/movies/partial/
+parts/
 sdist/
 var/
 wheels/

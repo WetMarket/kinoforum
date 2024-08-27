@@ -1,0 +1,8 @@
+<div class="action-buttons">
+    {% if perms.movies.change_movie %}
+        <a class="btn-submit" href="{% url 'edit_page' pk=post.pk %}">Редактировать</a>
+    {% endif %}
+    {% if perms.movies.delete_movie %}
+        <a class="btn-submit" href="{% url 'movie_delete' slug=post.slug %}">Удалить</a>
+    {% endif %}
+</div>
