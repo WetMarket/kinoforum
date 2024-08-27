@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponseNotFound, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 
-from movies.models import Movie, Category, TagPost, Person, Favorites
+from movies.models import Movie, Category, TagPost, Person, Favorites, MovieReaction
 from movies.forms import AddPostForm, CommentForm
 from movies.utils import DataMixin
 
@@ -25,6 +25,35 @@ def add_favorites(request, post_slug):
 def remove_favorites(request, post_slug):
     movie = get_object_or_404(Movie, slug=post_slug)
     Favorites.objects.filter(user=request.user, movie=movie).delete()
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def toggle_reaction(request, post_slug, reaction_type):
+    movie = get_object_or_404(Movie, slug=post_slug)
+
+    # Попробуем найти существующую реакцию
+    reaction = MovieReaction.objects.filter(user=request.user, movie=movie).first()
+
+    if reaction:
+        if reaction_type == 'like':
+            if reaction.is_like is True:
+                reaction.delete()
+            else:
+                reaction.is_like = True
+                reaction.save()
+        elif reaction_type == 'dislike':
+            if reaction.is_like is False:
+                reaction.delete()
+            else:
+                reaction.is_like = False
+                reaction.save()
+    else:
+        if reaction_type == 'like':
+            MovieReaction.objects.create(user=request.user, movie=movie, is_like=True)
+        elif reaction_type == 'dislike':
+            MovieReaction.objects.create(user=request.user, movie=movie, is_like=False)
+
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -87,11 +116,23 @@ class ShowPost(DataMixin, DetailView):
         director_people = [director.person for director in directors]
 
         comments = post.comments.all()
-
         paginator = Paginator(comments, self.paginate_by)
         page = self.request.GET.get('page')
+
         is_favorite = Favorites.objects.filter(user=self.request.user, movie=post).exists() \
             if self.request.user.is_authenticated else False
+
+        favorites_count = Favorites.objects.filter(movie=post).count()
+
+        like_count = MovieReaction.objects.filter(movie=post, is_like=True).count()
+        dislike_count = MovieReaction.objects.filter(movie=post, is_like=False).count()
+
+        user_reaction = None
+        if self.request.user.is_authenticated:
+            try:
+                user_reaction = MovieReaction.objects.get(user=self.request.user, movie=post)
+            except MovieReaction.DoesNotExist:
+                user_reaction = None
 
         try:
             comments = paginator.page(page)
@@ -104,6 +145,10 @@ class ShowPost(DataMixin, DetailView):
             'comments': comments,
             'form': CommentForm(),
             'is_favorite': is_favorite,
+            'favorites_count': favorites_count,
+            'user_reaction': user_reaction,
+            'like_count': like_count,
+            'dislike_count': dislike_count,
         })
 
         return self.get_mixin_context(

@@ -223,16 +223,24 @@ img {
 .poster-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.poster {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .favorites-action {
-    margin-top: 25px;
-    padding-left: 10px;
+    margin-top: 20px;
     width: 100%;
     display: flex;
-    justify-content: left;
+    justify-content: center;
 }
 
 .favorites-action .btn {
@@ -254,13 +262,11 @@ img {
     background-color: #aaaaaa;
 }
 
-.poster {
-    width: 100%;
-    max-width: 300px;
-    aspect-ratio: 2 / 3;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.poster-container p {
+    margin-top: 10px;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
 }
 
 .description {
@@ -310,8 +316,10 @@ img {
     color: #333;
 }
 
-.action-buttons p{
-    margin: 0;
+.action-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
 }
 
 .person-container {
@@ -617,12 +625,60 @@ img {
 }
 
 .comments-container {
-    margin-top: 40px;
+    margin-top: 80px;
     padding: 10px;
 }
 
+.reaction-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.reaction-stat {
+    margin-top: 15px;
+    color: #666;
+    font-size: 14px;
+    text-align: left;
+}
+
+.reaction-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);*/
+}
+
+.btn-active {
+    background-color: #f0f0f0;
+    border-color: #cccccc;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);
+}
+
+.btn-inactive {
+    background-color: #f9f9f9;
+    border-color: #ccc;
+}
+
+.reaction-btn:hover {
+    border-color: #333333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-active:hover {
+    border-color: #aaaaaa;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
 .comments-container h3 {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #333;
     font-size: 20px;
     font-weight: 600;
@@ -658,6 +714,7 @@ img {
 }
 
 .comment-form {
+    margin-top: 40px;
     margin-bottom: 40px;
 }
 
@@ -710,10 +767,10 @@ img {
 
 .filter-container {
     display: flex;
-    justify-content: flex-start; /* Выравнивание по левому краю */
-    align-items: center; /* Выравнивание по вертикали */
-    gap: 15px; /* Расстояние между элементами */
-    margin: 20px auto; /* Отступы от краев контейнера */
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+    margin: 20px auto;
     max-width: 1100px;
     width: 100%;
 }
