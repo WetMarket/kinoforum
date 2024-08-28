@@ -136,6 +136,7 @@ class TagPost(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
 
     class Meta:
+        ordering = ['tag']
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 

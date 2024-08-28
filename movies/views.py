@@ -61,9 +61,19 @@ class MovieHome(DataMixin, ListView):
     template_name = 'movies/index.html'
     context_object_name = 'post'
     title_page = 'КИНОФОРУМ'
+    paginate_by = 8
 
     def get_queryset(self):
-        return Movie.published.all()
+        queryset = Movie.published.all()
+
+        # Проверка параметра сортировки
+        rating = self.request.GET.get('rating')
+        if rating == 'desc':
+            queryset = queryset.order_by('-rating')
+        elif rating == 'asc':
+            queryset = queryset.order_by('rating')
+
+        return queryset
 
 
 class MovieCategory(DataMixin, ListView):
@@ -73,14 +83,17 @@ class MovieCategory(DataMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = self.get_category()
-        return self.get_mixin_context(
-            context,
-            title=category.name,
-            tags=TagPost.objects.filter(tags__cat_id=category.pk).distinct(),
-            cat_slug=category.slug,
-            cat_selected=category.pk,
-            genre_selected=self.get_genre_slug()
-        )
+
+        context.update({
+            'title': category.name,
+            'tags': TagPost.objects.filter(tags__cat_id=category.pk).distinct(),
+            'cat_slug': category.slug,
+            'cat_selected': category.pk,
+            'genre_selected': self.get_genre_slug(),
+            'rating_selected': self.get_rating_order(),
+        })
+
+        return context
 
     def get_category(self):
         return get_object_or_404(Category, slug=self.kwargs['cat_slug'])
@@ -88,16 +101,27 @@ class MovieCategory(DataMixin, ListView):
     def get_genre_slug(self):
         return self.request.GET.get('genre')
 
+    def get_rating_order(self):
+        return self.request.GET.get('rating')
+
     def get_queryset(self):
         category = self.get_category()
         genre_slug = self.get_genre_slug()
+        rating_order = self.get_rating_order()
+
+        queryset = Movie.published.filter(cat_id=category.pk)
 
         if genre_slug:
             if not TagPost.objects.filter(slug=genre_slug).exists():
                 raise Http404("Жанр не найден")
-            return Movie.published.filter(cat_id=category.pk, tags__slug=genre_slug)
+            queryset = queryset.filter(tags__slug=genre_slug)
 
-        return Movie.published.filter(cat_id=category.pk)
+        if rating_order == 'desc':
+            queryset = queryset.order_by('-rating')
+        elif rating_order == 'asc':
+            queryset = queryset.order_by('rating')
+
+        return queryset
 
 
 class ShowPost(DataMixin, DetailView):

@@ -204,6 +204,10 @@ img {
     text-align: left;
 }
 
+.genres select{
+    margin-right: 20px;
+}
+
 .post-container {
     width: 1000px;
     max-width: 100%;
@@ -425,7 +429,7 @@ img {
     padding: 10px 0;
 }
 
-.pagination a {
+.pagination button {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -437,15 +441,19 @@ img {
     border-radius: 12px;
     font-size: 16px;
     text-align: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 
-.pagination a.active {
+.pagination button.active {
     border: 2px solid #333;
 }
 
-.pagination a:hover:not(.active) {
+.pagination button:hover:not(.active) {
     background-color: #ddd;
 }
+
 
 .form-error {
     color: #d9534f;
@@ -636,7 +644,7 @@ img {
 
 .reaction-stat {
     margin-top: 15px;
-    color: #666;
+    color: #888;
     font-size: 14px;
     text-align: left;
 }
@@ -689,7 +697,7 @@ img {
 }
 
 .comments-list p{
-    color: #555;
+    color: #888;
 }
 
 .comment-item {

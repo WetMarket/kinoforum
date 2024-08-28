@@ -6,16 +6,28 @@
     
         <h3>Жанры в категории</h3>
     
-        <form method="GET" id="filterForm">
+        <form method="GET" id="Form">
             <label for="genre">Выберите жанр:</label>
-            <select name="genre" id="genre" onchange="document.getElementById('filterForm').submit();">
-            <option value="">Все жанры</option>
-            {% for tag in tags %}
-                <option value="{{ tag.slug }}" {% if tag.slug == request.GET.genre %}selected{% endif %}>
-                    {{ tag.tag }}
-                </option>
-            {% endfor %}
+            <select name="genre" id="genre" onchange="document.getElementById('Form').submit();">
+                <option value="">Все жанры</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.slug }}" {% if tag.slug == request.GET.genre %}selected{% endif %}>
+                        {{ tag.tag }}
+                    </option>
+                {% endfor %}
             </select>
+        
+            <label for="rating">Рейтинг:</label>
+            <select name="rating" id="rating" onchange="document.getElementById('Form').submit();">
+                <option value="">Без сортировки</option>
+                <option value="desc" {% if request.GET.rating == 'desc' %}selected{% endif %}>
+                    По убыванию
+                </option>
+                <option value="asc" {% if request.GET.rating == 'asc' %}selected{% endif %}>
+                    По возрастанию
+                </option>
+            </select>
+        
         </form>
     
     </div>

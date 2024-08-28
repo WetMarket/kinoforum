@@ -58,54 +58,65 @@ class FavoritesView(ListView):
     paginate_by = 8
 
     def get_queryset(self):
-        # Получаем ID избранных фильмов текущего пользователя
-        favorite_ids = Favorites.objects.filter(user=self.request.user).values_list('movie_id', flat=True)
-        queryset = Movie.objects.filter(id__in=favorite_ids).select_related('cat').prefetch_related('tags')
+        queryset = Movie.published.all()
+
+        rating_order = self.get_rating_order()
 
         # Фильтрация по категории
         category_slug = self.request.GET.get('category')
         if category_slug:
-            queryset = queryset.filter(cat__slug=category_slug)
+            category = get_object_or_404(Category, slug=category_slug)
+            queryset = queryset.filter(cat=category)
 
         # Фильтрация по жанру
         tag_slug = self.request.GET.get('tag')
         if tag_slug:
-            queryset = queryset.filter(tags__slug=tag_slug)
+            tag = get_object_or_404(TagPost, slug=tag_slug)
+            queryset = queryset.filter(tags=tag)
+
+        # Фильтрация по избранному
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.filter(favorites__user=user)
+
+        if rating_order == 'desc':
+            queryset = queryset.order_by('-rating')
+        elif rating_order == 'asc':
+            queryset = queryset.order_by('rating')
 
         return queryset
+
+    def get_rating_order(self):
+        return self.request.GET.get('rating')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Избранное'
+        context['rating_selected'] = self.get_rating_order()
 
-        # Получаем ID избранных фильмов текущего пользователя
-        favorite_ids = Favorites.objects.filter(user=self.request.user).values_list('movie_id', flat=True)
-        favorite_movies = Movie.objects.filter(id__in=favorite_ids) if favorite_ids else Movie.objects.none()
+        user = self.request.user
 
-        if favorite_movies.exists():
-            # Получаем все категории, связанные с избранными фильмами
-            categories = Category.objects.filter(id__in=favorite_movies.values_list('cat_id', flat=True)).distinct()
-            context['categories'] = categories
+        # Получаем все фильмы в избранном для текущего пользователя
+        favorite_movies = Movie.objects.filter(favorites__user=user).distinct()
 
-            # Получаем жанры для фильтрации
-            selected_category = self.request.GET.get('category', '')
-            if selected_category:
-                selected_category_obj = Category.objects.filter(slug=selected_category).first()
-                if selected_category_obj:
-                    tags = TagPost.objects.filter(tags__cat_id=selected_category_obj.pk).distinct()
-                else:
-                    tags = TagPost.objects.none()
-            else:
-                # Если категория не выбрана, берем все жанры из избранных фильмов
-                tags = TagPost.objects.filter(tags__in=favorite_movies.values_list('tags', flat=True)).distinct()
+        # Фильтрация категорий, связанных с избранными фильмами
+        favorite_categories = Category.objects.filter(list__in=favorite_movies).distinct()
+        context['categories'] = favorite_categories
 
-            context['tags'] = tags
+        # Фильтрация жанров, связанных с избранными фильмами
+        # Если категория выбрана, фильтруем теги по этой категории
+        selected_category_slug = self.request.GET.get('category', '')
+
+        if selected_category_slug:
+            selected_category = get_object_or_404(Category, slug=selected_category_slug)
+            favorite_tags = TagPost.objects.filter(id__in=Movie.objects.filter(
+                cat=selected_category, id__in=favorite_movies.values('id')).values_list('tags', flat=True)).distinct()
+
         else:
-            # Если нет избранных фильмов, категории и жанры не предоставляются
-            context['categories'] = []
-            context['tags'] = []
+            favorite_tags = TagPost.objects.filter(tags__in=favorite_movies).distinct()
 
-        # Передаем выбранные значения в контекст
+        context['tags'] = favorite_tags
+
         context['selected_category'] = self.request.GET.get('category', '')
         context['selected_tag'] = self.request.GET.get('tag', '')
 

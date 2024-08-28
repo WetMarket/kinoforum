@@ -4,9 +4,21 @@
 {% block content %}
 
     {% show_categories %}
-    
-    <h2 class="movies-heading">Популярные новинки</h2>
-    
+    <div class="genres"> 
+    <h3>Популярные новинки</h3>
+    <form method="GET" id="Form">
+        <label for="rating">Рейтинг:</label>
+        <select name="rating" id="rating" onchange="document.getElementById('Form').submit();">
+            <option value="">Без сортировки</option>
+            <option value="desc" {% if request.GET.rating == 'desc' %}selected{% endif %}>
+                По убыванию
+            </option>
+            <option value="asc" {% if request.GET.rating == 'asc' %}selected{% endif %}>
+                По возрастанию
+            </option>
+        </select>
+    </form>
+    </div>
     {% include 'movies/_movie_list.html' %}
     
 {% endblock %}
