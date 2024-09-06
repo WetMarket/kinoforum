@@ -1,7 +1,8 @@
 menu = [{'title': "О сайте", 'url_name': 'about'},
-        # {'title': "Оставить отзыв", 'url_name': 'reviews'},
         {'title': "Обратная связь", 'url_name': 'contact'},
         {'title': "Добавить фильм", 'url_name': 'addpage'}]
+
+# {'title': "Оставить отзыв", 'url_name': 'reviews'},
 
 
 class DataMixin:

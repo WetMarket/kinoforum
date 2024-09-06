@@ -61,7 +61,6 @@ class MovieHome(DataMixin, ListView):
     template_name = 'movies/index.html'
     context_object_name = 'post'
     title_page = 'КИНОФОРУМ'
-    paginate_by = 8
 
     def get_queryset(self):
         queryset = Movie.published.all()

@@ -33,7 +33,7 @@
 {% if page_obj.has_other_pages %}
     <div class="pagination">
         {% if page_obj.number > 1 %}
-            <button type="submit" name="page" value="1" class="pagination-arrow" form="Form">&laquo;</button>  <!-- Первая страница -->
+            <button type="submit" name="page" value="1" class="pagination-arrow" form="Form">&lsaquo;</button>  <!-- Первая страница -->
         {% endif %}
 
         {% for p in paginator.page_range %}
@@ -45,7 +45,7 @@
         {% endfor %}
 
         {% if page_obj.number < paginator.num_pages %}
-            <button type="submit" name="page" value="{{ paginator.num_pages }}" class="pagination-arrow" form="Form">&raquo;</button>  <!-- Последняя страница -->
+            <button type="submit" name="page" value="{{ paginator.num_pages }}" class="pagination-arrow" form="Form">&rsaquo;</button>  <!-- Последняя страница -->
         {% endif %}
     </div>
 {% endif %}
